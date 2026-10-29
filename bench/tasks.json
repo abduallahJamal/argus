@@ -1,0 +1,76 @@
+[
+ {
+  "id": "asar",
+  "label": "Electron: trace a feature through app.asar to the native call",
+  "targets": ["electron-demo.asar", "mac_utils.node"],
+  "prompt": "electron-demo.asar in this folder is an Electron app's app.asar, and mac_utils.node is the native addon it requires. Trace the meeting-detection feature. Report (1) the native function the addon calls, (2) the main-process class that drives detection, (3) the IPC channel a renderer invokes to START detection, (4) the IPC channel main broadcasts when the process list changes, (5) the name the preload exposes to the renderer. Keep it short and cite file paths.",
+  "key": {
+   "start channel": { "literal": "demo:detect:start", "weight": 3 },
+   "broadcast channel": { "literal": "demo:detect:changed-v2", "weight": 3 },
+   "class": { "literal": "AudioController", "weight": 2 },
+   "bridge name": { "literal": "demoApi", "weight": 2 },
+   "native fn": { "literal": "getRunningInputAudioProcesses", "weight": 3 },
+   "no invented channel": { "mustNot": ["demo:detect:started", "demo:detect:begin"], "weight": 2 }
+  }
+ },
+ {
+  "id": "native",
+  "label": "Native addon: exports, TCC check, peer auth",
+  "targets": ["mac_utils.node"],
+  "prompt": "mac_utils.node is a macOS Node native addon. Report (1) every JS-callable function name you can establish, (2) which macOS framework and function it uses to check an audio-capture permission, and the TCC service string, (3) how a peer of its local socket is authenticated. Keep it short.",
+  "key": {
+   "export 1": { "literal": "getRunningInputAudioProcesses", "weight": 2 },
+   "export 2": { "literal": "getProcessesAccessingSpeakersWithResult", "weight": 2 },
+   "export 3": { "literal": "isSchemeHandlerPresent", "weight": 2 },
+   "TCC framework": { "regex": "TCC(\\.framework)?", "weight": 3 },
+   "TCC function": { "literal": "TCCAccessPreflight", "weight": 2 },
+   "TCC service": { "literal": "kTCCServiceAudioCapture", "weight": 3 },
+   "peer auth": { "regex": "getpeereid|SO_PEERCRED", "weight": 3 },
+   "no packing claim": { "mustNot": ["VMProtect", "Themida", "UPX"], "weight": 1 }
+  }
+ },
+ {
+  "id": "lock",
+  "label": "Deep native: socket path format, wire protocol, peer auth",
+  "targets": ["lockdemo"],
+  "prompt": "lockdemo in this folder is a compiled native binary (source not available). Reverse engineer its single-instance lock from the binary: (1) the exact socket path format and what each variable part is computed from, (2) the wire protocol a second instance uses to send its payload, (3) how the server authenticates the connecting peer. Keep it short.",
+  "key": {
+   "path prefix": { "literal": "/tmp/argusdemo.", "weight": 3 },
+   "euid part": { "regex": "geteuid|effective (user|uid)|euid", "weight": 2 },
+   "hash part": { "regex": "hash|FNV|fnv1a", "weight": 3 },
+   "exe source": { "regex": "executable('s)? path|exe(cutable)? path|/proc/self/exe|readlink|_NSGetExecutablePath", "weight": 2 },
+   "length prefix": { "regex": "4[- ]byte|uint32|htonl|big[- ]endian|length[- ]prefix", "weight": 3 },
+   "json body": { "regex": "JSON", "weight": 2 },
+   "peer auth": { "regex": "getpeereid|SO_PEERCRED", "weight": 3 },
+   "not base64": { "mustNot": ["base64"], "weight": 1 }
+  }
+ },
+ {
+  "id": "bundle",
+  "label": "Minified bundle: endpoint, token key, feature flag",
+  "targets": ["bench-bundle.js"],
+  "prompt": "bench-bundle.js is a minified web bundle. Report (1) the endpoint it fetches for meetings, (2) the storage key it reads a token from and how the token is sent, (3) the feature flag that gates meeting detection, (4) the global object it exposes on window. Keep it short.",
+  "key": {
+   "endpoint": { "literal": "/api/v2/meetings", "weight": 3 },
+   "token key": { "literal": "demo.session.token", "weight": 3 },
+   "auth header": { "regex": "bearer", "weight": 2 },
+   "flag": { "literal": "enable-meeting-detection", "weight": 3 },
+   "global": { "literal": "demoClient", "weight": 2 },
+   "no setItem claim": { "mustNot": ["setItem("], "weight": 1 }
+  }
+ },
+ {
+  "id": "go",
+  "label": "Go binary: toolchain, main path, two dependency versions",
+  "targets": ["gh"],
+  "requires": "gh",
+  "prompt": "gh in this folder is a compiled binary. Without running it, report the language/toolchain version it was built with, its main package path, and the exact versions of github.com/cli/go-gh/v2 and golang.org/x/crypto. Keep it short.",
+  "key": {
+   "go version": { "regex": "go1\\.27\\.1", "weight": 3 },
+   "main path": { "literal": "github.com/cli/cli/v2/cmd/gh", "weight": 3 },
+   "go-gh": { "regex": "v2\\.16\\.1", "weight": 2 },
+   "crypto": { "regex": "v0\\.57\\.0", "weight": 2 },
+   "no invented dep": { "mustNot": ["github.com/cli/go-gh/v2 v2\\.0\\.0"], "weight": 1 }
+  }
+ }
+]

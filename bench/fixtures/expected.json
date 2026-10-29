@@ -1,0 +1,109 @@
+{
+ "demo.elf": {
+  "kind": "elf",
+  "note": "ELF executable"
+ },
+ "demo-go.elf": {
+  "kind": "go",
+  "note": "ELF with Go buildinfo"
+ },
+ "demo-rust.elf": {
+  "kind": "rust",
+  "note": "ELF with rustc path + dep-v0"
+ },
+ "demo.node": {
+  "kind": [
+   "macho",
+   "node-addon"
+  ],
+  "note": "Mach-O node addon"
+ },
+ "Demo.dylib": {
+  "kind": "macho",
+  "note": "Mach-O dylib"
+ },
+ "demo.exe": {
+  "kind": "pe",
+  "note": "PE executable"
+ },
+ "demo-dotnet.exe": {
+  "kind": "dotnet",
+  "note": "PE with .NET metadata"
+ },
+ "app.asar": {
+  "kind": "asar",
+  "note": "electron asar"
+ },
+ "app.apk": {
+  "kind": "apk",
+  "note": "zip with manifest + dex + flutter libs"
+ },
+ "demo.ipa": {
+  "kind": [
+   "ipa",
+   "ipa-flutter"
+  ],
+  "note": "zip with Payload/*.app"
+ },
+ "demo.jar": {
+  "kind": "jar",
+  "note": "zip with manifest + class"
+ },
+ "index.android.bundle": {
+  "kind": "hermes",
+  "note": "Hermes HBC header"
+ },
+ "app.wasm": {
+  "kind": "wasm",
+  "note": "wasm magic"
+ },
+ "global-metadata.dat": {
+  "kind": "unity-metadata",
+  "note": "IL2CPP metadata magic"
+ },
+ "state.sqlite": {
+  "kind": "sqlite",
+  "note": "sqlite header"
+ },
+ "Info.plist": {
+  "kind": "plist-binary",
+  "note": "binary plist"
+ },
+ "capture.pcap": {
+  "kind": "pcap",
+  "note": "pcap global header"
+ },
+ "bundle.js": {
+  "kind": "web-bundle",
+  "note": "minified bundle with IPC + sourcemap"
+ },
+ "blob.bin": {
+  "kind": "binary-unknown",
+  "note": "high-entropy unrecognised blob"
+ },
+ "archive.gz": {
+  "kind": "gzip",
+  "note": "gzip stream"
+ },
+ "bench/electron-demo.asar": {
+  "kind": "asar",
+  "note": "benchmark target: synthetic Electron app"
+ },
+ "bench/mac_utils.node": {
+  "kind": [
+   "macho",
+   "node-addon"
+  ],
+  "note": "benchmark target: native addon stub"
+ },
+ "bench/bench-bundle.js": {
+  "kind": "web-bundle",
+  "note": "benchmark target: minified bundle"
+ },
+ "real.elf": {
+  "kind": [
+   "elf"
+  ],
+  "note": "compiled on this machine with gcc"
+ }
+}

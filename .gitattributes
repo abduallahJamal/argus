@@ -1,0 +1,5 @@
+# Mark generated benchmark outputs and synthetic binary/text fixtures so GitHub Linguist reports source languages accurately
+bench/dashboard.html linguist-generated=true
+bench/SELF_TEST.md linguist-generated=true
+bench/results/** linguist-generated=true
+bench/fixtures/** linguist-generated=true

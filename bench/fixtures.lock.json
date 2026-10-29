@@ -1,0 +1,30 @@
+{
+ "gh": {
+  "sha256": "15e3994a583263dff9140e9a225a6a496422c3d7abe5506c53f293ee4017f17a",
+  "url": "https://github.com/cli/cli/releases/download/v2.80.0/gh_2.80.0_linux_amd64.tar.gz",
+  "bytes": 54968504,
+  "note": "Open-source Go binary. Pin the hash after the first download: node bench/fetch.mjs --pin",
+  "pinned": "2026-10-29"
+ },
+ "rg": {
+  "sha256": "f401154e2393f9002ac77e419f9ee5521c18f4f8cd3e32293972f493ba06fce7",
+  "url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz",
+  "bytes": 6597984,
+  "note": "Open-source Rust binary (static musl).",
+  "pinned": "2026-10-29"
+ },
+ "jq": {
+  "sha256": "5942c9b0934e510ee61eb3e30273f1b3fe2590df93933a93d7c58b81d19c8ff5",
+  "url": "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64",
+  "bytes": 2319424,
+  "note": "Open-source C binary: a clean ELF with no language runtime markers.",
+  "pinned": "2026-10-29"
+ },
+ "fdroid": {
+  "sha256": "19d51fad482239f6df6a99120e34513667e9a86d136dafdc4a211a68c3327b52",
+  "url": "https://f-droid.org/F-Droid.apk",
+  "bytes": 12569951,
+  "note": "F-Droid's own APK: an open-source Android target that changes version over time, so do not pin this one.",
+  "pinned": "2026-10-29"
+ }
+}

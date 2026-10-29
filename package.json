@@ -1,0 +1,56 @@
+{
+  "name": "@argus-re/cli",
+  "version": "0.4.0",
+  "description": "Hundred eyes, zero MCP. A zero-dependency static-analysis router CLI + 8.7 KB multi-agent skill (OpenCode, Claude Code, Codex, Cursor, Gemini, Copilot) for Electron, Mach-O, ELF, PE/.NET, Go, Rust, JVM, Android, iOS, Unity IL2CPP, Flutter, WASM, and firmware.",
+  "author": "Abduallah Jamal <abdallah.gamal.mohamed1@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abduallahJamal/argus.git"
+  },
+  "homepage": "https://github.com/abduallahJamal/argus#readme",
+  "bugs": {
+    "url": "https://github.com/abduallahJamal/argus/issues"
+  },
+  "type": "module",
+  "bin": {
+    "argus": "bin/argus.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "skill/",
+    "README.md",
+    "README.ar.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node bin/argus.mjs check",
+    "build": "node bin/argus.mjs build",
+    "doctor": "node bin/argus.mjs doctor",
+    "fixtures": "node bench/mkfixtures.mjs",
+    "smoke": "npm run fixtures && node bin/argus.mjs check --fixtures"
+  },
+  "keywords": [
+    "reverse-engineering",
+    "binary-analysis",
+    "static-analysis",
+    "electron",
+    "dotnet",
+    "mach-o",
+    "elf",
+    "agent-skills",
+    "opencode",
+    "claude-code",
+    "codex",
+    "cli"
+  ]
+}

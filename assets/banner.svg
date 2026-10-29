@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-label="argus — Hundred Eyes, Zero MCP: Static-Analysis Router CLI &amp; Multi-Agent Reverse-Engineering Skill">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="55%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#12224A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="50%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#22C55E"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#818CF8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="340" fill="url(#bg)"/>
+  <rect width="1200" height="340" fill="url(#glow)"/>
+
+  <!-- subtle binary grid -->
+  <g stroke="#ffffff" stroke-opacity="0.05" stroke-width="1">
+    <path d="M0 60H1200M0 120H1200M0 180H1200M0 240H1200M0 300H1200"/>
+    <path d="M60 0V340M240 0V340M420 0V340M600 0V340M780 0V340M960 0V340M1140 0V340"/>
+  </g>
+
+  <!-- Argus hundred-eyes / binary lens emblem top-right -->
+  <g transform="translate(1070, 96)" fill="none">
+    <circle r="46" stroke="#38BDF8" stroke-opacity="0.18" stroke-width="1.5"/>
+    <path d="M-38,0 Q0,-30 38,0 Q0,30 -38,0 Z" stroke="#00E5FF" stroke-opacity="0.65" stroke-width="2"/>
+    <circle r="14" stroke="#818CF8" stroke-opacity="0.85" stroke-width="2"/>
+    <circle r="5" fill="#22C55E"/>
+    <circle cx="-24" cy="-22" r="2.2" fill="#38BDF8" fill-opacity="0.7"/>
+    <circle cx="24" cy="-22" r="2.2" fill="#818CF8" fill-opacity="0.7"/>
+    <circle cx="-24" cy="22" r="2.2" fill="#818CF8" fill-opacity="0.7"/>
+    <circle cx="24" cy="22" r="2.2" fill="#22C55E" fill-opacity="0.7"/>
+  </g>
+
+  <!-- accent rule -->
+  <rect x="72" y="58" width="76" height="5" rx="2.5" fill="url(#accent)"/>
+
+  <text x="72" y="120" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="44" font-weight="800" fill="#F1F5F9">
+    argus
+  </text>
+  <text x="212" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="600" fill="#38BDF8">
+    hundred eyes, zero MCP · v0.4.0
+  </text>
+  <text x="72" y="164" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="18.5" fill="#94A3B8">
+    Zero-Dependency Binary &amp; Bundle Router CLI + 8.7 KB Progressive-Disclosure Reverse-Engineering Skill
+  </text>
+
+  <!-- feature cards -->
+  <g font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+    <g>
+      <rect x="72" y="210" width="248" height="90" rx="14" fill="url(#card)" stroke="#ffffff" stroke-opacity="0.12"/>
+      <rect x="72" y="210" width="5" height="90" rx="2.5" fill="#00E5FF"/>
+      <text x="96" y="245" font-size="18" font-weight="700" fill="#E2E8F0">detect · plan · recon</text>
+      <text x="96" y="273" font-size="13" fill="#94A3B8">43 Plans · Magic Bytes &amp; Sections</text>
+    </g>
+    <g>
+      <rect x="342" y="210" width="248" height="90" rx="14" fill="url(#card)" stroke="#ffffff" stroke-opacity="0.12"/>
+      <rect x="342" y="210" width="5" height="90" rx="2.5" fill="#818CF8"/>
+      <text x="366" y="245" font-size="18" font-weight="700" fill="#E2E8F0">8.7 KB + 22 Refs</text>
+      <text x="366" y="273" font-size="13" fill="#94A3B8">73 KB On-Demand Sliceable Depth</text>
+    </g>
+    <g>
+      <rect x="612" y="210" width="248" height="90" rx="14" fill="url(#card)" stroke="#ffffff" stroke-opacity="0.12"/>
+      <rect x="612" y="210" width="5" height="90" rx="2.5" fill="#A78BFA"/>
+      <text x="636" y="245" font-size="18" font-weight="700" fill="#E2E8F0">49-Tool Doctor</text>
+      <text x="636" y="273" font-size="13" fill="#94A3B8">Zero Dead Ends · Auto Fallbacks</text>
+    </g>
+    <g>
+      <rect x="882" y="210" width="246" height="90" rx="14" fill="url(#card)" stroke="#ffffff" stroke-opacity="0.12"/>
+      <rect x="882" y="210" width="5" height="90" rx="2.5" fill="#22C55E"/>
+      <text x="906" y="245" font-size="18" font-weight="700" fill="#E2E8F0">Multi-Agent Build</text>
+      <text x="906" y="273" font-size="13" fill="#94A3B8">OpenCode · Claude · Codex · Cursor</text>
+    </g>
+  </g>
+</svg>

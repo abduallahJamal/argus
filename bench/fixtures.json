@@ -1,0 +1,39 @@
+[
+ {
+  "id": "gh",
+  "install": "gh",
+  "task": "go",
+  "kind": "go",
+  "url": "https://github.com/cli/cli/releases/download/v2.80.0/gh_2.80.0_linux_amd64.tar.gz",
+  "archive": "tar.gz",
+  "member": "gh_2.80.0_linux_amd64/bin/gh",
+  "note": "Open-source Go binary. Pin the hash after the first download: node bench/fetch.mjs --pin"
+ },
+ {
+  "id": "rg",
+  "install": "rg-bin",
+  "kind": "rust",
+  "url": "https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz",
+  "archive": "tar.gz",
+  "member": "ripgrep-14.1.1-x86_64-unknown-linux-musl/rg",
+  "note": "Open-source Rust binary (static musl)."
+ },
+ {
+  "id": "jq",
+  "install": "jq-bin",
+  "kind": "elf",
+  "url": "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64",
+  "archive": null,
+  "member": null,
+  "note": "Open-source C binary: a clean ELF with no language runtime markers."
+ },
+ {
+  "id": "fdroid",
+  "install": "F-Droid.apk",
+  "kind": "apk",
+  "url": "https://f-droid.org/F-Droid.apk",
+  "archive": null,
+  "member": null,
+  "note": "F-Droid's own APK: an open-source Android target that changes version over time, so do not pin this one."
+ }
+]

@@ -1,0 +1,72 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: ["18", "20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node bench/mkfixtures.mjs
+      - name: unit tests
+        run: node --test test/
+      - name: repo lints (size budgets, reference integrity, no dead ends, fixtures)
+        run: node bin/argus.mjs check --fixtures
+      - name: build every agent format
+        run: node bin/argus.mjs build
+      - name: install every agent format into a clean root
+        run: node bin/argus.mjs install --agent all --dir "${RUNNER_TEMP:-/tmp}/argus-install"
+      - name: doctor (informational)
+        run: node bin/argus.mjs doctor || true
+      - name: recon a real binary from this machine
+        run: node bin/argus.mjs recon "$(command -v node)" --budget 16384
+
+  harness:
+    name: benchmark harness self-test (no model, no network)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node bench/mkfixtures.mjs
+      - run: node bench/setup.mjs
+      - run: node bench/run.mjs --dry --reps 2
+      - name: report and dashboard are generated, not typed
+        run: |
+          node bin/argus.mjs report bench/results/dry.jsonl --html bench/dashboard.html --md bench/SELF_TEST.md
+          test -s bench/dashboard.html
+          grep -q "| arm |" bench/SELF_TEST.md
+      - name: re-grading saved answers works
+        run: node bin/argus.mjs grade bench/results/dry.jsonl
+
+  budgets:
+    name: the skill stays small
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: core skill must stay under the budget
+        run: |
+          node -e '
+            const fs=require("fs");
+            const kb=fs.statSync("skill/SKILL.md").size/1024;
+            const limit=9;
+            console.log(`SKILL.md ${kb.toFixed(2)} KB / ${limit} KB`);
+            if(kb>limit){console.error("budget exceeded: move detail into skill/references/");process.exit(1);}
+          '
+      - run: node bin/argus.mjs check
