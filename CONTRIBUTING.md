@@ -49,7 +49,7 @@ Rules:
 
 ```sh
 node bench/mkfixtures.mjs
-node --test test/
+node --test test/*.test.mjs
 node bin/argus.mjs check --fixtures
 node bin/argus.mjs build
 node bench/run.mjs --dry --reps 2        # the harness must still work end to end

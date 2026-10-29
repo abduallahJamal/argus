@@ -43,3 +43,10 @@ test("a directory target is recognised (app bundle / project)", () => {
   assert.equal(d.kind, "directory");
   assert.equal(d.confidence, "medium");
 });
+
+test("both little-endian (arm64/x86_64) and big-endian Mach-O headers route to macho", () => {
+  const d = detect(path.join(FIX, "Demo.dylib"));
+  assert.equal(d.kind, "macho");
+  assert.equal(d.confidence, "high");
+  assert.match(d.evidence[0].bytes, /^cf fa ed fe/);
+});

@@ -104,6 +104,6 @@
   "kind": [
    "elf"
   ],
-  "note": "compiled on this machine with gcc"
+  "note": "compiled on this machine with gcc/clang"
  }
 }

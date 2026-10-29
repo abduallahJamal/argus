@@ -21,7 +21,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: node bench/mkfixtures.mjs
       - name: unit tests
-        run: node --test test/
+        run: node --test test/*.test.mjs
       - name: repo lints (size budgets, reference integrity, no dead ends, fixtures)
         run: node bin/argus.mjs check --fixtures
       - name: build every agent format

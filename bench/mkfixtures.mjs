@@ -74,7 +74,7 @@ function zip(entries) {
 // ---- binary builders -----------------------------------------------------
 const macho64 = (extra = Buffer.alloc(0)) => {
   const h = Buffer.alloc(32);
-  h.writeUInt32BE(0xfeedfacf, 0);
+  h.writeUInt32LE(0xfeedfacf, 0); // MH_MAGIC_64 (little-endian on arm64 & x86_64)
   h.writeUInt32LE(0x0100000c, 4); // arm64
   h.writeUInt32LE(2, 12);
   return B(h, extra, Buffer.alloc(64));
@@ -241,94 +241,16 @@ expect["bench/bench-bundle.js"] = { kind: "web-bundle", note: "benchmark target:
 
 fs.writeFileSync(path.join(DIR, "expected.json"), JSON.stringify(expect, null, 1));
 
-// Optional: a real ELF from this machine, if a compiler exists, to test the non-synthetic path.
+// Optional: a real native binary compiled on this host (ELF on Linux, Mach-O on macOS), if a compiler exists.
 try {
   const src = path.join(DIR, "hello.c");
   fs.writeFileSync(src, "#include <stdio.h>\n#include <unistd.h>\nint main(void){ printf(\"%d\\n\", geteuid()); return 0; }\n");
   execFileSync("gcc", ["-O1", "-o", path.join(DIR, "real.elf"), src], { stdio: "ignore" });
-  expect["real.elf"] = { kind: ["elf"], note: "compiled on this machine with gcc" };
-  // ---- benchmark targets: small, realistic, and owned by this repo ----------
-// These exist so the benchmark harness can be run and graded without downloading anything.
-const BENCH = path.join(DIR, "bench");
-fs.mkdirSync(BENCH, { recursive: true });
-
-const mainJs = `const { app, ipcMain, BrowserWindow } = require("electron");
-const macUtils = require("./mac_utils.node");
-
-class AudioController {
-  constructor() { this.timer = null; this.mode = "poll"; }
-  start() {
-    if (this.timer) return;
-    this.timer = setInterval(() => {
-      const procs = macUtils.getRunningInputAudioProcesses();
-      for (const w of BrowserWindow.getAllWindows()) {
-        w.webContents.send("demo:detect:changed-v2", procs);
-      }
-    }, 2000);
-  }
-  stop() { clearInterval(this.timer); this.timer = null; }
-}
-
-const controller = new AudioController();
-ipcMain.handle("demo:detect:start", () => { controller.start(); return { ok: true, mode: "poll" }; });
-ipcMain.handle("demo:detect:stop", () => { controller.stop(); return { ok: true }; });
-app.whenReady().then(() => {
-  const win = new BrowserWindow({ webPreferences: { preload: require("path").join(__dirname, "preload.js"), contextIsolation: true, sandbox: true } });
-  win.loadFile("renderer.html");
-});
-`;
-
-const preloadJs = `const { contextBridge, ipcRenderer } = require("electron");
-contextBridge.exposeInMainWorld("demoApi", {
-  start: () => ipcRenderer.invoke("demo:detect:start"),
-  stop: () => ipcRenderer.invoke("demo:detect:stop"),
-  onChanged: (cb) => ipcRenderer.on("demo:detect:changed-v2", (_e, v) => cb(v)),
-});
-`;
-
-const rendererJs = `(function(){var t=window.demoApi;var b=document.getElementById("toggle");var s=document.getElementById("state");b.addEventListener("click",function(){t.start().then(function(){s.textContent="on"})});t.onChanged(function(v){s.textContent=v.length+" apps"});})();`;
-
-const benchAsar = (() => {
-  const header = JSON.stringify({
-    files: {
-      "package.json": { size: 68, offset: "0" },
-      "main.js": { size: mainJs.length, offset: String(68) },
-      "preload.js": { size: preloadJs.length, offset: String(68 + mainJs.length) },
-      "renderer.min.js": { size: rendererJs.length, offset: String(68 + mainJs.length + preloadJs.length) },
-    },
-  });
-  const pkg = JSON.stringify({ name: "demo-desktop", version: "1.2.3", main: "main.js" }).padEnd(68, " ");
-  const body = Buffer.from(pkg + mainJs + preloadJs + rendererJs);
-  const pickle = Buffer.alloc(4);
-  pickle.writeUInt32LE(header.length, 0);
-  const payload = B(pickle, header);
-  const sizes = Buffer.alloc(8);
-  sizes.writeUInt32LE(4, 0);
-  sizes.writeUInt32LE(payload.length, 4);
-  return B(sizes, payload, body);
-})();
-w("bench/electron-demo.asar", benchAsar);
-
-// A native addon stub: real Mach-O header, with the strings that matter for the answer key.
-w("bench/mac_utils.node", macho64(Buffer.from(
-  "\u0000napi_define_class\u0000napi_create_function\u0000getRunningInputAudioProcesses\u0000" +
-  "getProcessesAccessingSpeakersWithResult\u0000isSchemeHandlerPresent\u0000TCCAccessPreflight\u0000" +
-  "kTCCServiceAudioCapture\u0000getpeereid\u0000/tmp/demo.singleinstance.\u0000NODE_MODULE\u0000")));
-
-const benchBundle = Buffer.from(
-  "!function(e){function t(n){return e[n]}var r={endpoint:\"/api/v2/meetings?limit=50\",tokenKey:\"demo.session.token\"," +
-  "flag:\"enable-meeting-detection\",cdn:\"https://cdn.demo.example/assets/v3/\"};" +
-  "function n(){var o=window.localStorage.getItem(r.tokenKey);return fetch(r.endpoint,{headers:{authorization:\"Bearer \"+o}})}" +
-  "function i(){return window.__DEMO_FLAGS__&&window.__DEMO_FLAGS__[r.flag]===!0}" +
-  "window.demoClient={load:n,meetingsEnabled:i,config:r};}({});" +
-  "//# sourceMappingURL=bench-bundle.js.map\n");
-w("bench/bench-bundle.js", benchBundle);
-
-expect["bench/electron-demo.asar"] = { kind: "asar", note: "benchmark target: synthetic Electron app" };
-expect["bench/mac_utils.node"] = { kind: ["macho", "node-addon"], note: "benchmark target: native addon stub" };
-expect["bench/bench-bundle.js"] = { kind: "web-bundle", note: "benchmark target: minified bundle" };
-
-fs.writeFileSync(path.join(DIR, "expected.json"), JSON.stringify(expect, null, 1));
+  expect["real.elf"] = {
+    kind: process.platform === "darwin" ? ["macho"] : process.platform === "win32" ? ["pe"] : ["elf"],
+    note: "compiled on this machine with gcc/clang",
+  };
+  fs.writeFileSync(path.join(DIR, "expected.json"), JSON.stringify(expect, null, 1));
 } catch { /* no compiler: synthetic fixtures are enough */ }
 
 const files = Object.keys(expect);

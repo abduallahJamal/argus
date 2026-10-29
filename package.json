@@ -32,7 +32,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test test/*.test.mjs",
     "lint": "node bin/argus.mjs check",
     "build": "node bin/argus.mjs build",
     "doctor": "node bin/argus.mjs doctor",

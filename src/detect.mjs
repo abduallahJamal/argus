@@ -9,9 +9,9 @@ const ascii = (b, n = 32) =>
 
 /** Byte signatures, checked in order. First match wins. */
 const SIGNATURES = [
-  { kind: "macho", label: "Mach-O (32-bit)", test: b => b.readUInt32BE(0) === 0xfeedface },
-  { kind: "macho", label: "Mach-O (64-bit)", test: b => b.readUInt32BE(0) === 0xfeedfacf },
-  { kind: "macho-fatal", label: "Mach-O universal", test: b => b.readUInt32BE(0) === 0xcafebabe || b.readUInt32BE(0) === 0xbebafeca },
+  { kind: "macho", label: "Mach-O (32-bit)", test: b => b.readUInt32LE(0) === 0xfeedface || b.readUInt32BE(0) === 0xfeedface },
+  { kind: "macho", label: "Mach-O (64-bit)", test: b => b.readUInt32LE(0) === 0xfeedfacf || b.readUInt32BE(0) === 0xfeedfacf },
+  { kind: "macho-fatal", label: "Mach-O universal", test: b => b.readUInt32BE(0) === 0xcafebabe || b.readUInt32BE(0) === 0xbebafeca || b.readUInt32BE(0) === 0xcafebabf },
   { kind: "elf", label: "ELF", test: b => b.subarray(0, 4).equals(Buffer.from([0x7f, 0x45, 0x4c, 0x46])) },
   { kind: "pe", label: "PE / COFF", test: b => b[0] === 0x4d && b[1] === 0x5a },
   { kind: "wasm", label: "WebAssembly", test: b => b.subarray(0, 4).equals(Buffer.from([0x00, 0x61, 0x73, 0x6d])) },
