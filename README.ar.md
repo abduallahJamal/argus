@@ -84,13 +84,13 @@ argus install --agent all                 # OpenCode + Claude Code + Codex + AGE
 </div>
 
 ```sh
-# لبيئة OpenCode
+# OpenCode
 mkdir -p ~/.config/opencode/skills && cp -R skill ~/.config/opencode/skills/argus
 
-# لبيئة Claude Code
+# Claude Code
 mkdir -p ~/.claude/skills && cp -R skill ~/.claude/skills/argus
 
-# لبيئة Codex CLI
+# Codex CLI
 mkdir -p ~/.agents/skills && cp -R skill ~/.agents/skills/argus
 ```
 
@@ -200,29 +200,25 @@ argus grade  bench/results/run.jsonl
 
 ## هيكل المستودع
 
-</div>
-
-```text
-bin/argus.mjs        واجهة سطر الأوامر (بدون أي اعتماديات خارجية، Node >= 18 ESM)
-src/detect.mjs       فحص التواقيع الثنائية وبنية الحاويات وجداول أقسام ELF/Mach-O وعلامات البناء
-src/plan.mjs         43 خطة تحليل ثابت بمستويات وميزانيات مخرجات وبدائل أنظمة وfallbacks
-src/tools.mjs        سجل 49 أداة هندسة عكسية + محوّل rg -> grep التلقائي
-src/doctor.mjs       فاحص قدرات الجهاز واقتراح البدائل الفورية
-src/recon.mjs        منفّذ الجرد المحدود بميزانية بايتات وحفظ الأدلة في JSON
-src/refs.mjs         محرّك المكتبة المرجعية والبحث المقطعي بالكلمات المفتاحية
-src/build.mjs        بناء الحزم لـ OpenCode وClaude Code وCodex وAGENTS.md وCursor وGemini وCopilot
-src/check.mjs        مدقق المستودع (ميزانيات الحجم، سلامة الروابط، الخطط، والعيّنات الـ 24)
-src/report.mjs       التحليل الإحصائي (Median / IQR / Bootstrap CI) وتوليد Markdown ولوحة HTML
-src/grade.mjs        مُصحّح الإجابات الموزون والمتسامح مع الفواصل ومعيار جودة الأدلة
-skill/SKILL.md       المهارة النواة بحجم 8.7 KB (السقف الأقصى في CI: 9 KB)
-skill/references/    22 مرجعاً عميقاً بإجمالي 73 KB (السقف لكل مرجع: 14 KB)
-bench/               مولّد العيّنات، المهام، هدف C المصدري، ولوحة الفحص الذاتي
-test/                حزمة الاختبارات الآلية (node:test)
-```
+| المسار | الدور الهندسي |
+| :--- | :--- |
+| `bin/argus.mjs` | واجهة سطر الأوامر الموحّدة بدون أي اعتماديات خارجية (`Node >= 18 ESM`) |
+| `src/detect.mjs` | فحص التواقيع الثنائية وبنية الحاويات وجداول أقسام `ELF` و`Mach-O` وعلامات البناء |
+| `src/plan.mjs` | 43 خطة تحليل ثابت مرتّبة بمستويات وميزانيات مخرجات وبدائل أنظمة و`fallbacks` |
+| `src/tools.mjs` | سجل يضم 49 أداة هندسة عكسية محلية مع محوّل `rg` إلى `grep` التلقائي |
+| `src/doctor.mjs` | فاحص قدرات الجهاز واقتراح البدائل الفورية عند غياب أي أداة |
+| `src/recon.mjs` | منفّذ الجرد المحدود بميزانية بايتات وحفظ تقارير الأدلة بصيغة `JSON` |
+| `src/refs.mjs` | محرّك المكتبة المرجعية والبحث المقطعي بالكلمات المفتاحية |
+| `src/build.mjs` | بناء حزم المهارة لـ `OpenCode` و`Claude Code` و`Codex` و`AGENTS.md` و`Cursor` و`Gemini` و`Copilot` |
+| `src/check.mjs` | مدقق المستودع الصارم (ميزانيات الحجم، سلامة الروابط، الخطط، والعيّنات الـ 24) |
+| `src/report.mjs` | التحليل الإحصائي (`Median` / `IQR` / `Bootstrap CI`) وتوليد تقارير `Markdown` ولوحة `HTML` |
+| `src/grade.mjs` | مُصحّح الإجابات الموزون والمتسامح مع الفواصل ومعيار جودة الاستشهاد بالأدلة |
+| `skill/SKILL.md` | المهارة النواة بحجم `8.7 KB` (محكومة بسقف `9 KB` في `CI`) |
+| `skill/references/` | 22 مرجعاً عميقاً في الهندسة العكسية بإجمالي `73 KB` (بسقف `14 KB` لكل مرجع) |
+| `bench/` | مولّد العيّنات، المهام، هدف `C` المصدري، ولوحة الفحص الذاتي |
+| `test/` | حزمة الاختبارات الآلية الشاملة (`27` اختباراً عبر `node:test`) |
 
 ---
-
-<div align="right" dir="rtl">
 
 ## نطاق الاستخدام المصرّح به (`Authorization`)
 
